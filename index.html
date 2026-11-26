@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form Booking Jadwal GOR Pengadegan</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+        body {
+            background: linear-gradient(135deg, #0f172a, #0ea5e9, #f97316);
+            min-height: 100vh;
+            padding: 30px 16px;
+        }
+        .foto-banner {
+            max-width: 500px;
+            margin: 0 auto 16px auto;
+        }
+        .foto-banner img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            border-radius: 16px;
+            box-shadow: 0 6px 16px rgba(0,0,0,0.25);
+        }
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.30);
+        }
+        .peringatan {
+            color: #dc2626;
+            font-weight: bold;
+            font-size: 22px;
+            text-align: center;
+            margin-bottom: 16px;
+        }
+        .keterangan {
+            text-align: center;
+            margin-bottom: 24px;
+            line-height: 1.6;
+            color: #333333;
+        }
+        .form-item {
+            margin-bottom: 16px;
+        }
+        label {
+            display: block;
+            margin-bottom: 7px;
+            font-weight: 700;
+            color: #1e40af;
+            font-size: 16px;
+        }
+        input {
+            width: 100%;
+            padding: 13px;
+            border: 2px solid #60a5fa;
+            border-radius: 12px;
+            font-size: 16px;
+            background-color: #f8fafc;
+            transition: 0.3s;
+        }
+        input:focus {
+            outline: none;
+            border-color: #f97316;
+            background-color: #ffffff;
+            box-shadow: 0 0 8px #fdba74;
+        }
+        button {
+            width: 100%;
+            padding: 15px;
+            margin-top: 14px;
+            border: none;
+            border-radius: 12px;
+            background: linear-gradient(90deg, #2563eb, #f97316);
+            color: white;
+            font-size: 19px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        button:hover {
+            transform: scale(1.03);
+            box-shadow: 0 6px 18px rgba(37, 99, 235, 0.35);
+        }
+    </style>
+</head>
+<body>
+    <!-- Banner Olahraga di ATAS -->
+    <div class="foto-banner">
+        <img src="https://images.unsplash.com/photo-1626224583764-f87db24ac4ea?ixlib=rb-4.0.3&auto=format&fit=crop&w=900&q=80" alt="Badminton Futsal Voli Basket">
+    </div>
+
+    <div class="container">
+        <div class="peringatan">⚠️MOHON DI BACA DAN DI CERMATI SAMPAI BAWAH‼️</div>
+        <div class="keterangan">
+            Bisa diinfokan lebih detail rencana tanggal dan jamnya? Nanti kami bantu cek ketersediaan jadwalnya.<br><br>
+            <strong>Booking jadwal wajib di isi</strong>
+        </div>
+
+        <div class="form-item">
+            <label>➡️ Nama</label>
+            <input type="text" id="nama">
+        </div>
+        <div class="form-item">
+            <label>➡️ Tanggal</label>
+            <input type="text" id="tggl">
+        </div>
+        <div class="form-item">
+            <label>➡️ Mulai main/sampai jam</label>
+            <input type="text" id="jam">
+        </div>
+        <div class="form-item">
+            <label>➡️ Main berapa jam</label>
+            <input type="text" id="durasi">
+        </div>
+        <div class="form-item">
+            <label>➡️ Booking berapa lapangan</label>
+            <input type="text" id="lapangan">
+        </div>
+
+        <button onclick="kirimData()">KIRIM BOOKING</button>
+    </div>
+
+<script>
+const TOKEN_BOT = "7615138410:AAFP5FAwFKFxNv5KJRaqRAxtd5E7DfpfNx4";
+const CHAT_ID = "7431131436";
+
+function kirimData(){
+    const nama = document.getElementById("nama").value.trim();
+    const tggl = document.getElementById("tggl").value.trim();
+    const jam = document.getElementById("jam").value.trim();
+    const durasi = document.getElementById("durasi").value.trim();
+    const lapangan = document.getElementById("lapangan").value.trim();
+
+    if(!nama){
+        alert("❌ Kolom Nama belum diisi!");
+        return;
+    }
+    if(!tggl){
+        alert("❌ Kolom Tanggal belum diisi!");
+        return;
+    }
+    if(!jam){
+        alert("❌ Kolom Mulai main/sampai jam belum diisi!");
+        return;
+    }
+    if(!durasi){
+        alert("❌ Kolom Main berapa jam belum diisi!");
+        return;
+    }
+    if(!lapangan){
+        alert("❌ Kolom Booking berapa lapangan belum diisi!");
+        return;
+    }
+
+    const pesan = `✅ BOOKING BARU MASUK!
+
+➡️ Nama = ${nama}
+
+➡️ Tanggal = ${tggl}
+
+➡️ Mulai main = ${jam}
+
+➡️ Berapa jam = ${durasi}
+
+➡️ Berapa lapangan = ${lapangan}`;
+
+    fetch(`https://api.telegram.org/bot${TOKEN_BOT}/sendMessage?chat_id=${CHAT_ID}&text=${encodeURIComponent(pesan)}`)
+    .then(res => res.json())
+    .then(hasil => {
+        if(hasil.ok){
+            alert("✅ BERHASIL! Booking sudah terkirim         Untuk pembayaran kita payment transfer kak!");
+        }else{
+            alert("❌ GAGAL, cek Token atau Chat ID kamu!");
+        }
+    })
+}
+</script>
+</body>
+</html>
